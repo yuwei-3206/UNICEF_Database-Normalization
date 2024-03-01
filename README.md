@@ -10,4 +10,5 @@ After designing the database, there is a fact table with 3 dimension tables:
 
 
 The fact table contains the fact indicators, making it easy to search for and retrieve data, while also improving database efficiency, reducing redundancy, and enhancing data integrity.
+
 ![1709308971671](https://github.com/yuwei-3206/UNICEF_Database-Normalization/assets/122844465/b3a58416-7445-479d-9e24-1952dd7d9a5e)
