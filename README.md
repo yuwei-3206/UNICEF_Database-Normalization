@@ -6,8 +6,10 @@ The raw data has only one unstructured table that looks like:
 
 ![1709308561437](https://github.com/yuwei-3206/UNICEF_Database-Normalization/assets/122844465/4acb6a50-bf8c-4821-a3e9-57e5bbc1cb37)
 
-After designing the database, there is a fact table with 3 dimension tables:
-![data](https://github.com/yuwei-3206/UNICEF_Database-Normalization/assets/122844465/65fa8c22-842a-4a8d-88ce-6fbb5061fc6f)
+After designing the database, there is fact tables with dimension tables:
+
+![data1](https://github.com/yuwei-3206/UNICEF_Database-Normalization/assets/122844465/f92eee55-0635-44b6-977f-95291d4f990d)
+
 
 
 The fact table contains the fact indicators, making it easy to search for and retrieve data, while also improving database efficiency, reducing redundancy, and enhancing data integrity.
