@@ -1,0 +1,320 @@
+-- Questions
+
+-- Q1
+-- “Education”-related indicators are very sparse, not all countries have those available each year. 
+-- How to retrieve the latest value of each “Education”-related indicator for each country? 
+SELECT
+    gender_code,
+    country_code,
+    MAX(ED_15_24_LR) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_15_24_LR IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_15_24_LR,
+    MAX(ED_ANAR_L02) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ANAR_L02 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ANAR_L02,
+    MAX(ED_ANAR_L1) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ANAR_L1 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ANAR_L1,
+    MAX(ED_ANAR_L2) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ANAR_L2 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ANAR_L2,
+    MAX(ED_ANAR_L3) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ANAR_L3 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ANAR_L3,
+    MAX(ED_CR_L1) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_CR_L1 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_CR_L1,
+    MAX(ED_CR_L2) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_CR_L2 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_CR_L2,
+    MAX(ED_CR_L3) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_CR_L3 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_CR_L3,
+    MAX(ED_MAT_G23) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_MAT_G23 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_MAT_G23,
+    MAX(ED_MAT_L1) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_MAT_L1 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_MAT_L1,
+    MAX(ED_MAT_L2) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_MAT_L2 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_MAT_L2,
+    MAX(ED_READ_G23) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_READ_G23 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_READ_G23,
+    MAX(ED_READ_L1) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_READ_L1 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_READ_L1,
+    MAX(ED_READ_L2) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_READ_L2 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_READ_L2,
+    MAX(ED_ROFST_L02) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L02 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L02,
+    MAX(ED_ROFST_L1) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L1 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L1,
+    MAX(ED_ROFST_L1_ADM) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L1_ADM IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L1_ADM,
+    MAX(ED_ROFST_L2) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L2 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L2,
+    MAX(ED_ROFST_L2_ADM) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L2_ADM IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L2_ADM,
+    MAX(ED_ROFST_L3) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L3 IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L3,
+    MAX(ED_ROFST_L3_ADM) KEEP (DENSE_RANK FIRST ORDER BY CASE WHEN ED_ROFST_L3_ADM IS NOT NULL THEN 1 ELSE 2 END, YEAR_CODE DESC) AS ED_ROFST_L3_ADM
+FROM
+    UDW_FACT_EDUCATION
+HAVING
+    MAX(ED_15_24_LR) IS NOT NULL
+    OR MAX(ED_ANAR_L02) IS NOT NULL
+    OR MAX(ED_ANAR_L1) IS NOT NULL
+    OR MAX(ED_ANAR_L2) IS NOT NULL
+    OR MAX(ED_ANAR_L3) IS NOT NULL
+    OR MAX(ED_CR_L1) IS NOT NULL
+    OR MAX(ED_CR_L2) IS NOT NULL
+    OR MAX(ED_CR_L3) IS NOT NULL
+    OR MAX(ED_MAT_G23) IS NOT NULL
+    OR MAX(ED_MAT_L1) IS NOT NULL
+    OR MAX(ED_MAT_L2) IS NOT NULL
+    OR MAX(ED_READ_G23) IS NOT NULL
+    OR MAX(ED_READ_L1) IS NOT NULL
+    OR MAX(ED_READ_L2) IS NOT NULL
+    OR MAX(ED_ROFST_L02) IS NOT NULL
+    OR MAX(ED_ROFST_L1) IS NOT NULL
+    OR MAX(ED_ROFST_L1_ADM) IS NOT NULL
+    OR MAX(ED_ROFST_L2) IS NOT NULL
+    OR MAX(ED_ROFST_L2_ADM) IS NOT NULL
+    OR MAX(ED_ROFST_L3) IS NOT NULL
+    OR MAX(ED_ROFST_L3_ADM) IS NOT NULL
+GROUP BY
+    gender_code,
+    country_code
+ORDER BY COUNTRY_CODE;
+
+-- Check for values in different country
+select  year_code , 
+        gender_code , 
+        country_code ,
+        ED_15_24_LR , 
+        ED_ANAR_L02 , 
+        ED_ANAR_L1 , 
+        ED_ANAR_L2 , 
+        ED_ANAR_L3 , 
+        ED_CR_L1 , 
+        ED_CR_L2 , 
+        ED_CR_L3 , 
+        ED_MAT_G23 , 
+        ED_MAT_L1 , 
+        ED_MAT_L2 , 
+        ED_READ_G23 , 
+        ED_READ_L1 , 
+        ED_READ_L2 , 
+        ED_ROFST_L02 , 
+        ED_ROFST_L1 , 
+        ED_ROFST_L1_ADM , 
+        ED_ROFST_L2 , 
+        ED_ROFST_L2_ADM , 
+        ED_ROFST_L3 , 
+        ED_ROFST_L3_ADM 
+from UDW_FACT_EDUCATION 
+where COUNTRY_CODE = 'AFG'
+
+
+-- Q3
+-- How to get the ratio of change in each “Education”-related indicator for each country?
+-- Considering the latest two available values (regardless of which year data was collected)
+-- Exclude the countries that don't have at least 2 values
+SELECT
+    GENDER_CODE,
+    COUNTRY_CODE,
+    ROUND((first_ED_15_24_LR / second_ED_15_24_LR) * 100, 2)||'%' AS ED_15_24_LR_change_ratio,
+    ROUND((first_ED_ANAR_L02 / second_ED_ANAR_L02) * 100, 2)||'%' AS ED_ANAR_L02_change_ratio,
+    ROUND((first_ED_ANAR_L1 / second_ED_ANAR_L1) * 100, 2)||'%' AS ED_ANAR_L1_change_ratio,
+    ROUND((first_ED_ANAR_L2 / second_ED_ANAR_L2) * 100, 2)||'%' AS ED_ANAR_L2_change_ratio,
+    ROUND((first_ED_ANAR_L3 / second_ED_ANAR_L3) * 100, 2)||'%' AS ED_ANAR_L3_change_ratio,
+    ROUND((first_ED_CR_L1 / second_ED_CR_L1) * 100, 2)||'%' AS ED_CR_L1_change_ratio,
+    ROUND((first_ED_CR_L2 / second_ED_CR_L2) * 100, 2)||'%' AS ED_CR_L2_change_ratio,
+    ROUND((first_ED_CR_L3 / second_ED_CR_L3) * 100, 2)||'%' AS ED_CR_L3_change_ratio,
+    ROUND((first_ED_MAT_G23 / second_ED_MAT_G23) * 100, 2)||'%' AS ED_MAT_G23_change_ratio,
+    ROUND((first_ED_MAT_L1 / second_ED_MAT_L1) * 100, 2)||'%' AS ED_MAT_L1_change_ratio,
+    ROUND((first_ED_MAT_L2 / second_ED_MAT_L2) * 100, 2)||'%' AS ED_MAT_L2_change_ratio,
+    ROUND((first_ED_READ_G23 / second_ED_READ_G23) * 100, 2)||'%' AS ED_READ_G23_change_ratio,
+    ROUND((first_ED_READ_L1 / second_ED_READ_L1) * 100, 2)||'%' AS ED_READ_L1_change_ratio,
+    ROUND((first_ED_READ_L2 / second_ED_READ_L2) * 100, 2)||'%' AS ED_READ_L2_change_ratio,
+    ROUND((first_ED_ROFST_L02 / second_ED_ROFST_L02) * 100, 2)||'%' AS ED_ROFST_L02_change_ratio,
+    ROUND((first_ED_ROFST_L1 / second_ED_ROFST_L1) * 100, 2)||'%' AS ED_ROFST_L1_change_ratio,
+    ROUND((first_ED_ROFST_L1_ADM / second_ED_ROFST_L1_ADM) * 100, 2)||'%' AS ED_ROFST_L1_ADM_change_ratio,
+    ROUND((first_ED_ROFST_L2 / second_ED_ROFST_L2) * 100, 2)||'%' AS ED_ROFST_L2_change_ratio,
+    ROUND((first_ED_ROFST_L2_ADM / second_ED_ROFST_L2_ADM) * 100, 2)||'%' AS ED_ROFST_L2_ADM_change_ratio,
+    ROUND((first_ED_ROFST_L3 / second_ED_ROFST_L3) * 100, 2)||'%' AS ED_ROFST_L3_change_ratio,
+    ROUND((first_ED_ROFST_L3_ADM / second_ED_ROFST_L3_ADM) * 100, 2)||'%' AS ED_ROFST_L3_ADM_change_ratio
+FROM (
+    SELECT
+        GENDER_CODE,
+        COUNTRY_CODE,
+        MAX(CASE WHEN rn = 1 THEN ED_15_24_LR END) AS first_ED_15_24_LR,
+        MAX(CASE WHEN rn = 2 THEN ED_15_24_LR END) AS second_ED_15_24_LR,
+        MAX(CASE WHEN rn = 1 THEN ED_ANAR_L02 END) AS first_ED_ANAR_L02,
+        MAX(CASE WHEN rn = 2 THEN ED_ANAR_L02 END) AS second_ED_ANAR_L02,
+        MAX(CASE WHEN rn = 1 THEN ED_ANAR_L1 END) AS first_ED_ANAR_L1,
+        MAX(CASE WHEN rn = 2 THEN ED_ANAR_L1 END) AS second_ED_ANAR_L1,
+        MAX(CASE WHEN rn = 1 THEN ED_ANAR_L2 END) AS first_ED_ANAR_L2,
+        MAX(CASE WHEN rn = 2 THEN ED_ANAR_L2 END) AS second_ED_ANAR_L2,
+        MAX(CASE WHEN rn = 1 THEN ED_ANAR_L3 END) AS first_ED_ANAR_L3,
+        MAX(CASE WHEN rn = 2 THEN ED_ANAR_L3 END) AS second_ED_ANAR_L3,
+        MAX(CASE WHEN rn = 1 THEN ED_CR_L1 END) AS first_ED_CR_L1,
+        MAX(CASE WHEN rn = 2 THEN ED_CR_L1 END) AS second_ED_CR_L1,
+        MAX(CASE WHEN rn = 1 THEN ED_CR_L2 END) AS first_ED_CR_L2,
+        MAX(CASE WHEN rn = 2 THEN ED_CR_L2 END) AS second_ED_CR_L2,
+        MAX(CASE WHEN rn = 1 THEN ED_CR_L3 END) AS first_ED_CR_L3,
+        MAX(CASE WHEN rn = 2 THEN ED_CR_L3 END) AS second_ED_CR_L3,
+        MAX(CASE WHEN rn = 1 THEN ED_MAT_G23 END) AS first_ED_MAT_G23,
+        MAX(CASE WHEN rn = 2 THEN ED_MAT_G23 END) AS second_ED_MAT_G23,
+        MAX(CASE WHEN rn = 1 THEN ED_MAT_L1 END) AS first_ED_MAT_L1,
+        MAX(CASE WHEN rn = 2 THEN ED_MAT_L1 END) AS second_ED_MAT_L1,
+        MAX(CASE WHEN rn = 1 THEN ED_MAT_L2 END) AS first_ED_MAT_L2,
+        MAX(CASE WHEN rn = 2 THEN ED_MAT_L2 END) AS second_ED_MAT_L2,
+        MAX(CASE WHEN rn = 1 THEN ED_READ_G23 END) AS first_ED_READ_G23,
+        MAX(CASE WHEN rn = 2 THEN ED_READ_G23 END) AS second_ED_READ_G23,
+        MAX(CASE WHEN rn = 1 THEN ED_READ_L1 END) AS first_ED_READ_L1,
+        MAX(CASE WHEN rn = 2 THEN ED_READ_L1 END) AS second_ED_READ_L1,
+        MAX(CASE WHEN rn = 1 THEN ED_READ_L2 END) AS first_ED_READ_L2,
+        MAX(CASE WHEN rn = 2 THEN ED_READ_L2 END) AS second_ED_READ_L2,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L02 END) AS first_ED_ROFST_L02,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L02 END) AS second_ED_ROFST_L02,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L1 END) AS first_ED_ROFST_L1,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L1 END) AS second_ED_ROFST_L1,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L1_ADM END) AS first_ED_ROFST_L1_ADM,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L1_ADM END) AS second_ED_ROFST_L1_ADM,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L2 END) AS first_ED_ROFST_L2,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L2 END) AS second_ED_ROFST_L2,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L2_ADM END) AS first_ED_ROFST_L2_ADM,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L2_ADM END) AS second_ED_ROFST_L2_ADM,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L3 END) AS first_ED_ROFST_L3,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L3 END) AS second_ED_ROFST_L3,
+        MAX(CASE WHEN rn = 1 THEN ED_ROFST_L3_ADM END) AS first_ED_ROFST_L3_ADM,
+        MAX(CASE WHEN rn = 2 THEN ED_ROFST_L3_ADM END) AS second_ED_ROFST_L3_ADM
+    FROM (
+        SELECT
+            GENDER_CODE,
+            COUNTRY_CODE,
+            ED_15_24_LR,
+            ED_ANAR_L02,
+            ED_ANAR_L1,
+            ED_ANAR_L2,
+            ED_ANAR_L3,
+            ED_CR_L1,
+            ED_CR_L2,
+            ED_CR_L3,
+            ED_MAT_G23,
+            ED_MAT_L1,
+            ED_MAT_L2,
+            ED_READ_G23,
+            ED_READ_L1,
+            ED_READ_L2,
+            ED_ROFST_L02,
+            ED_ROFST_L1,
+            ED_ROFST_L1_ADM,
+            ED_ROFST_L2,
+            ED_ROFST_L2_ADM,
+            ED_ROFST_L3,
+            ED_ROFST_L3_ADM,
+            ROW_NUMBER() OVER (PARTITION BY gender_code, country_code ORDER BY YEAR_CODE DESC) AS rn
+        FROM
+            UDW_FACT_EDUCATION
+    )
+    WHERE
+        rn <= 2
+    GROUP BY
+        GENDER_CODE,
+        COUNTRY_CODE
+    HAVING
+        COUNT(CASE WHEN ED_15_24_LR IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ANAR_L02 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ANAR_L1 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ANAR_L2 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ANAR_L3 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_CR_L1 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_CR_L2 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_CR_L3 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_MAT_G23 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_MAT_L1 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_MAT_L2 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_READ_G23 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_READ_L1 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_READ_L2 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L02 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L1 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L1_ADM IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L2 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L2_ADM IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L3 IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN ED_ROFST_L3_ADM IS NOT NULL THEN 1 END) >= 2
+)
+ORDER BY
+    COUNTRY_CODE;
+
+
+-- Q4
+-- How to get the ratio of change in each “Nutrition”-related indicator for each country?
+-- Considering the latest two available values (regardless of which year data was collected)
+-- Exclude the countries that don't have at least 2 values
+SELECT
+    gender_code,
+    country_code,
+    ROUND((first_NT_CF_ASF / second_NT_CF_ASF) * 100, 2)||'%' AS NT_CF_ASF_change_ratio,
+    ROUND((first_NT_CF_BREASTMILK / second_NT_CF_BREASTMILK) * 100, 2)||'%' AS NT_CF_BREASTMILK_change_ratio,
+    ROUND((first_NT_CF_DAIRY / second_NT_CF_DAIRY) * 100, 2)||'%' AS NT_CF_DAIRY_change_ratio,
+    ROUND((first_NT_CF_EGGS / second_NT_CF_EGGS) * 100, 2)||'%' AS NT_CF_EGGS_change_ratio,
+    ROUND((first_NT_CF_FF / second_NT_CF_FF) * 100, 2)||'%' AS NT_CF_FF_change_ratio,
+    ROUND((first_NT_CF_GRAINS / second_NT_CF_GRAINS) * 100, 2)||'%' AS NT_CF_GRAINS_change_ratio,
+    ROUND((first_NT_CF_ISSSF_FL / second_NT_CF_ISSSF_FL) * 100, 2)||'%' AS NT_CF_ISSSF_FL_change_ratio,
+    ROUND((first_NT_CF_LEGUMES / second_NT_CF_LEGUMES) * 100, 2)||'%' AS NT_CF_LEGUMES_change_ratio,
+    ROUND((first_NT_CF_MAD / second_NT_CF_MAD) * 100, 2)||'%' AS NT_CF_MAD_change_ratio,
+    ROUND((first_NT_CF_MDD / second_NT_CF_MDD) * 100, 2)||'%' AS NT_CF_MDD_change_ratio,
+    ROUND((first_NT_CF_MMF / second_NT_CF_MMF) * 100, 2)||'%' AS NT_CF_MMF_change_ratio,
+    ROUND((first_NT_CF_OTHER_FV / second_NT_CF_OTHER_FV) * 100, 2)||'%' AS NT_CF_OTHER_FV_change_ratio,
+    ROUND((first_NT_CF_VITA / second_NT_CF_VITA) * 100, 2)||'%' AS NT_CF_VITA_change_ratio,
+    ROUND((first_NT_CF_ZEROFV / second_NT_CF_ZEROFV) * 100, 2)||'%' AS NT_CF_ZEROFV_change_ratio
+FROM (
+    SELECT
+        gender_code,
+        country_code,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_ASF END) AS first_NT_CF_ASF,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_ASF END) AS second_NT_CF_ASF,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_BREASTMILK END) AS first_NT_CF_BREASTMILK,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_BREASTMILK END) AS second_NT_CF_BREASTMILK,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_DAIRY END) AS first_NT_CF_DAIRY,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_DAIRY END) AS second_NT_CF_DAIRY,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_EGGS END) AS first_NT_CF_EGGS,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_EGGS END) AS second_NT_CF_EGGS,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_FF END) AS first_NT_CF_FF,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_FF END) AS second_NT_CF_FF,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_GRAINS END) AS first_NT_CF_GRAINS,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_GRAINS END) AS second_NT_CF_GRAINS,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_ISSSF_FL END) AS first_NT_CF_ISSSF_FL,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_ISSSF_FL END) AS second_NT_CF_ISSSF_FL,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_LEGUMES END) AS first_NT_CF_LEGUMES,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_LEGUMES END) AS second_NT_CF_LEGUMES,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_MAD END) AS first_NT_CF_MAD,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_MAD END) AS second_NT_CF_MAD,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_MDD END) AS first_NT_CF_MDD,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_MDD END) AS second_NT_CF_MDD,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_MMF END) AS first_NT_CF_MMF,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_MMF END) AS second_NT_CF_MMF,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_OTHER_FV END) AS first_NT_CF_OTHER_FV,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_OTHER_FV END) AS second_NT_CF_OTHER_FV,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_VITA END) AS first_NT_CF_VITA,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_VITA END) AS second_NT_CF_VITA,
+        MAX(CASE WHEN rn = 1 THEN NT_CF_ZEROFV END) AS first_NT_CF_ZEROFV,
+        MAX(CASE WHEN rn = 2 THEN NT_CF_ZEROFV END) AS second_NT_CF_ZEROFV
+    FROM (
+        SELECT
+            gender_code,
+            country_code,
+            NT_CF_ASF,
+            NT_CF_BREASTMILK,
+            NT_CF_DAIRY,
+            NT_CF_EGGS,
+            NT_CF_FF,
+            NT_CF_GRAINS,
+            NT_CF_ISSSF_FL,
+            NT_CF_LEGUMES,
+            NT_CF_MAD,
+            NT_CF_MDD,
+            NT_CF_MMF,
+            NT_CF_OTHER_FV,
+            NT_CF_VITA,
+            NT_CF_ZEROFV,
+            ROW_NUMBER() OVER (PARTITION BY gender_code, country_code ORDER BY YEAR_CODE DESC) AS rn
+        FROM
+            UDW_FACT_NUTRITION
+    )
+    WHERE
+        rn <= 2
+    GROUP BY
+        gender_code,
+        country_code
+    HAVING
+        COUNT(CASE WHEN NT_CF_ASF IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_BREASTMILK IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_DAIRY IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_EGGS IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_FF IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_GRAINS IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_ISSSF_FL IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_LEGUMES IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_MAD IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_MDD IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_MMF IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_OTHER_FV IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_VITA IS NOT NULL THEN 1 END) >= 2
+        AND COUNT(CASE WHEN NT_CF_ZEROFV IS NOT NULL THEN 1 END) >= 2
+)
+ORDER BY
+    country_code;
